@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="47fb88ba-375f-439e-b075-9c4682a2092f" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="0795ef12-1e7c-4834-9d55-782fdad4736b" >
+		<salesforce:basic-connection username="srinivasngoje@apisero.com" password="Onspeed333" securityToken="ZFDmgWQwkbKOUipMbP8WXKmUm" />
+	</salesforce:sfdc-config>
+	<flow name="salesforcedemoFlow" doc:id="4cf7f539-7852-4cee-bae2-fb222f192076" >
+		<salesforce:subscribe-topic-listener doc:name="Subscribe topic listener" doc:id="744ff7d7-262c-4987-aef1-46a9c8d97f24" config-ref="Salesforce_Config" topic="sample1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="81cc9ef5-718b-42af-afbb-8105b0b7ae33" message="#[output application/json&#10;---&#10;payload]"/>
+		<set-variable value="#[attributes.'type']" doc:name="Set Variable" doc:id="6789dc74-dfb4-429e-81c9-90174702cea9" variableName="value"/>
+		<choice doc:name="Choice" doc:id="52a0a6ae-f41c-490a-8e99-2dcfc25a2e4e" >
+			<when expression='#[vars.value == "created"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="4b7c21e8-596d-40bc-a0fd-4d8751095dc8" message="inserted"/>
+				<flow-ref doc:name="created-implementationSub_Flow" doc:id="c6450e91-2cc9-4ca4-9848-a7c606b88b4c" name="created-implementationSub_Flow"/>
+			</when>
+			<when expression='#[vars.value == "updated"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="467bfbf4-6490-4917-8d56-35361b9fa332" message="updated"/>
+				<flow-ref doc:name="updated-implementationSub_Flow" doc:id="bf6184d5-3853-4f72-91b4-7099c9ba3885" name="updated-implementationSub_Flow"/>
+			</when>
+			<when expression='#[vars.value == "deleted"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="cef0028e-4de3-47f0-89a3-fcbba32502ce" message="deleted"/>
+				<flow-ref doc:name="deleted-implementationSub_Flow" doc:id="63204529-9e57-4b04-9c7b-c1e1de2bd176" name="deleted-implementationSub_Flow"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="88ef74e2-838e-4fe1-9b48-876d2fd90248" message="default"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="04ecd0d7-9ef5-4114-a4f0-3041b5460e9e" message="#[payload]"/>
+	</flow>
+</mule>

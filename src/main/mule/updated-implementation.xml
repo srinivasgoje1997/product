@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="updated-implementationSub_Flow" doc:id="0dc25e20-1a1a-4682-ba6e-8c5210a3008b" >
+		<logger level="INFO" doc:name="Logger" doc:id="af18c765-acf5-431e-b9ae-cddfb4bcfe54" message="update-info"/>
+		<db:update doc:name="Update" doc:id="4470cdca-7c33-425f-b595-9bc4ece61c3e" config-ref="Database_Config">
+			<db:sql ><![CDATA[update salesforce set emp_email__c = :empEmail, emp_skills__c =:empSkill, Id =:Id, emp_phone__c =:empPhone, Name =:name]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	empEmail: payload.emp_email__c,
+	empSkills: payload.emp_skills__c,
+	Id: payload.Id,
+	empPhone: payload.emp_phone__c,
+	name: payload.Name
+}]]]></db:input-parameters>
+		</db:update>
+	</sub-flow>
+</mule>

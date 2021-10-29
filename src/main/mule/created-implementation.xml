@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="c155b65c-cac7-49ef-ae71-602d0b5989b0" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" database="salesforce_mysql" />
+	</db:config>
+	<sub-flow name="created-implementationSub_Flow" doc:id="32809922-2a41-4e2e-9433-be9ea9a96998" >
+		<logger level="INFO" doc:name="Logger" doc:id="b6ccf52e-6ab2-4338-9012-71340a5faf0e" message="create-info"/>
+		<db:insert doc:name="Insert" doc:id="e22f4b1f-9892-4b21-aece-e4b408dab3a7" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into salesforce (emp_email__c,emp_skills__c,Id,emp_phone__c,Name) values (:emp_email, :emp_skills, :Id, :emp_phone, :Name)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	emp_email: payload.emp_email__c,
+	emp_skills: payload.emp_skills__c,
+	Id: payload.Id,
+	emp_phone: payload.emp_phone__c,
+	Name: payload.Name
+}]]]></db:input-parameters>
+		</db:insert>
+	</sub-flow>
+</mule>
