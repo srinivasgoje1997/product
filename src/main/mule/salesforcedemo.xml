@@ -30,7 +30,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<flow-ref doc:name="deleted-implementationSub_Flow" doc:id="63204529-9e57-4b04-9c7b-c1e1de2bd176" name="deleted-implementationSub_Flow"/>
 			</when>
 			<otherwise >
-				<logger level="INFO" doc:name="Logger" doc:id="88ef74e2-838e-4fe1-9b48-876d2fd90248" message="default"/>
+				<logger level="INFO" doc:name="Logger" doc:id="88ef74e2-838e-4fe1-9b48-876d2fd90248" message="thre is the default flow"/>
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="04ecd0d7-9ef5-4114-a4f0-3041b5460e9e" message="#[payload]"/>
